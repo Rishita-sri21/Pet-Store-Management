@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pet Store Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f8f8f8;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pet Store Management Dashboard</h1>
+
+    <div class="section">
+        <h2>Pets</h2>
+        <button onclick="loadPets()">Load Pets</button>
+        <table id="pets-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Breed</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Weight</th>
+                    <th>Sold</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Customers</h2>
+        <button onclick="loadCustomers()">Load Customers</button>
+        <table id="customers-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Sales</h2>
+        <button onclick="loadSales()">Load Sales</button>
+        <table id="sales-table">
+            <thead>
+                <tr>
+                    <th>Pet ID</th>
+                    <th>Customer ID</th>
+                    <th>Cost</th>
+                    <th>Bought Date</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <p id="total-sales"></p>
+    </div>
+
+    <script>
+        const API_URL = '';
+
+        function loadPets() {
+            fetch(API_URL + '/pets', { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.querySelector('#pets-table tbody');
+                tbody.innerHTML = '';
+                data.results.forEach(pet => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${pet.pet_id}</td>
+                        <td>${pet.typed}</td>
+                        <td>${pet.breed}</td>
+                        <td>${pet.age}</td>
+                        <td>${pet.gender}</td>
+                        <td>${pet.weight}</td>
+                        <td>${pet.sold}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        function loadCustomers() {
+            fetch(API_URL + '/customers', { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.querySelector('#customers-table tbody');
+                tbody.innerHTML = '';
+                data.results.forEach(cust => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${cust.customer_id}</td>
+                        <td>${cust.name}</td>
+                        <td>${cust.age}</td>
+                        <td>${cust.gender}</td>
+                        <td>${cust.address}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        function loadSales() {
+            fetch(API_URL + '/sales', { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.querySelector('#sales-table tbody');
+                tbody.innerHTML = '';
+                data.r.forEach(sale => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${sale.pet_id}</td>
+                        <td>${sale.customer_id}</td>
+                        <td>${sale.cost}</td>
+                        <td>${sale.bought_date}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                document.getElementById('total-sales').textContent = `Total Revenue: $${data.r2[0].pro}`;
+            });
+        }
+    </script>
+</body>
+</html>
